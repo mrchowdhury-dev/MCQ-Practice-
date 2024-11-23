@@ -1,0 +1,95 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 800px;
+    margin: 20px auto;
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    color: #4CAF50;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table, th, td {
+    border: 1px solid #ddd;
+}
+
+th, td {
+    padding: 8px;
+    text-align: left;
+}
+
+th {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.summary {
+    margin-top: 20px;
+    font-weight: bold;
+}
+
+.pdf-options {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap; /* Ensures elements wrap on smaller screens */
+}
+
+.pdf-options input {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+    width: 100%; /* Makes the input take full width on smaller screens */
+    max-width: 300px; /* Limits the maximum width of the input */
+}
+
+.pdf-options button {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%; /* Makes the button take full width on smaller screens */
+    max-width: 200px; /* Limits the maximum width of the button */
+}
+
+.pdf-options button:hover {
+    background-color: #45a049;
+}
+
+@media (max-width: 600px) {
+    .container {
+        padding: 15px;
+    }
+
+    h1 {
+        font-size: 24px; /* Adjusts the font size of the title for smaller screens */
+    }
+
+    .summary {
+        font-size: 14px; /* Makes the summary text smaller on mobile */
+    }
+
+    table th, table td {
+        font-size: 14px; /* Reduces table font size for better readability on mobile */
+    }
+}

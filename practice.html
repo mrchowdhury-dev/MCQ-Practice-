@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Practice Page</title>
+    <link rel="stylesheet" href="practice.css">
+</head>
+<body>
+    <!-- Timer will be fixed at the top -->
+    <div class="timer" id="timer">Time Remaining: 0m 0s</div>
+
+    <div class="container">
+        <h1>Practice Questions</h1>
+        <div id="questionsContainer"></div>
+        <button id="submitButton" onclick="submitPractice()">Submit</button>
+    </div>
+
+    <script>
+        const numQuestions = parseInt(localStorage.getItem('numQuestions'), 10);
+        const correctAnswers = JSON.parse(localStorage.getItem('correctAnswers'));
+        const userAnswers = Array(numQuestions).fill('none'); // Default user answers
+
+        let currentTime = numQuestions * 60; // 1 minute per question
+        const timerElement = document.getElementById('timer');
+
+        // Function to create questions
+        function initializeQuestions() {
+            const questionsContainer = document.getElementById('questionsContainer');
+            questionsContainer.innerHTML = '';
+
+            for (let i = 0; i < numQuestions; i++) {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'question';
+                questionDiv.innerHTML = `
+                    <label>Question ${i + 1}:</label>
+                    <div class="options">
+                        <label><input type="radio" name="question${i}" value="a" onclick="updateAnswer(${i}, 'a')"> A</label><br>
+                        <label><input type="radio" name="question${i}" value="b" onclick="updateAnswer(${i}, 'b')"> B</label><br>
+                        <label><input type="radio" name="question${i}" value="c" onclick="updateAnswer(${i}, 'c')"> C</label><br>
+                        <label><input type="radio" name="question${i}" value="d" onclick="updateAnswer(${i}, 'd')"> D</label>
+                    </div>
+                `;
+                questionsContainer.appendChild(questionDiv);
+            }
+        }
+
+        // Function to update the user's answer when a radio button is clicked
+        function updateAnswer(index, value) {
+            userAnswers[index] = value;
+        }
+
+        // Function to submit practice answers
+        function submitPractice() {
+            localStorage.setItem('userAnswers', JSON.stringify(userAnswers));
+            window.location.href = 'result.html';
+        }
+
+        // Function to start and manage the timer
+        function startTimer() {
+            const interval = setInterval(() => {
+                if (currentTime > 0) {
+                    currentTime--;
+                    const minutes = Math.floor(currentTime / 60);
+                    const seconds = currentTime % 60;
+                    timerElement.textContent = `Time Remaining: ${minutes}m ${seconds}s`;
+                } else {
+                    clearInterval(interval);
+                    alert("Time's up! Your answers are being submitted.");
+                    submitPractice();
+                }
+            }, 1000);
+        }
+
+        // Initialize questions and start the timer
+        initializeQuestions();
+        startTimer();
+    </script>
+</body>
+</html>

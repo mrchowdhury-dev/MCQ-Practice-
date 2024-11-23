@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Result Page</title>
+    <link rel="stylesheet" href="result.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Your Results</h1>
+        <div class="summary" id="summary"></div>
+        <table id="resultTable">
+            <thead>
+                <tr>
+                    <th>Question</th>
+                    <th>Your Answer</th>
+                    <th>Correct Answer</th>
+                    <th>Result</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+
+        <div class="pdf-options">
+            <input id="pdfFileName" type="text" placeholder="Enter file name" />
+            <button onclick="saveAsPDF()">Save as PDF</button>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script>
+        const userAnswers = JSON.parse(localStorage.getItem('userAnswers'));
+        const correctAnswers = JSON.parse(localStorage.getItem('correctAnswers'));
+
+        let correctCount = 0;
+
+        function loadResults() {
+            const tbody = document.querySelector('#resultTable tbody');
+            tbody.innerHTML = '';
+
+            userAnswers.forEach((answer, index) => {
+                const isCorrect = answer === correctAnswers[index];
+                if (isCorrect) correctCount++;
+
+                const row = `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td>${answer}</td>
+                        <td>${correctAnswers[index]}</td>
+                        <td>${isCorrect ? '✔️ Correct' : '❌ Incorrect'}</td>
+                    </tr>
+                `;
+                tbody.insertAdjacentHTML('beforeend', row);
+            });
+
+            const summaryElement = document.getElementById('summary');
+            summaryElement.textContent = `
+                Total Questions: ${userAnswers.length} | Correct: ${correctCount} | Incorrect: ${userAnswers.length - correctCount}
+            `;
+        }
+
+        loadResults();
+
+        // Save Results as PDF Function
+        function saveAsPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            let y = 10; // Initial vertical offset
+
+            // Add title
+            doc.setFontSize(16);
+            doc.text('Your Results', 105, y, { align: 'center' });
+            y += 10;
+
+            // Add summary
+            const summaryText = `
+                Total Questions: ${userAnswers.length}
+                Correct: ${correctCount}
+                Incorrect: ${userAnswers.length - correctCount}
+            `;
+            doc.setFontSize(12);
+            doc.text(summaryText, 10, y);
+            y += 20;
+
+            // Add table headers
+            doc.setFontSize(10);
+            doc.text('Question', 10, y);
+            doc.text('Your Answer', 50, y);
+            doc.text('Correct Answer', 100, y);
+            doc.text('Result', 150, y);
+            y += 5;
+
+            // Add table rows
+            userAnswers.forEach((answer, index) => {
+                const isCorrect = answer === correctAnswers[index];
+                const result = isCorrect ? 'Correct' : 'Incorrect';
+
+                doc.text(`${index + 1}`, 10, y);
+                doc.text(`${answer}`, 50, y);
+                doc.text(`${correctAnswers[index]}`, 100, y);
+                doc.text(`${result}`, 150, y);
+                y += 5;
+            });
+
+            // Get file name from input
+            const fileNameInput = document.getElementById('pdfFileName').value;
+            const fileName = fileNameInput ? `${fileNameInput}.pdf` : 'results.pdf';
+
+            // Save PDF
+            doc.save(fileName);
+        }
+    </script>
+</body>
+</html>

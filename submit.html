@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit Page</title>
+    <link rel="stylesheet" href="submit.css">
+</head>
+<body>
+    <h1>Submit Correct Answers</h1>
+    <div class="input-container">
+        <label for="numQuestions">Enter number of questions:</label>
+        <input id="numQuestions" type="number" min="1" placeholder="e.g. 5" onchange="validateInputs()">
+        
+        <label for="answers">Enter correct answers (a-d, e.g. abcd):</label>
+        <input id="answers" type="text" placeholder="e.g. abcd" onchange="validateInputs()">
+        
+        <button id="submitButton" onclick="submitAnswers()" disabled>Submit Answers</button>
+    </div>
+
+    <script>
+        let numQuestions = 0;
+        let answers = []; // To store answers input by the user
+
+        const numQuestionsInput = document.getElementById('numQuestions');
+        const answersInput = document.getElementById('answers');
+        const submitButton = document.getElementById('submitButton');
+
+        // This function validates if inputs are correct and enables the submit button
+        function validateInputs() {
+            numQuestions = parseInt(numQuestionsInput.value, 10);
+
+            // Automatically insert commas between characters (if needed) and allow only a-d characters
+            const inputValue = answersInput.value.toLowerCase().replace(/[^a-d]/g, ''); // Allow only a-d characters
+            answersInput.value = inputValue;
+
+            // Enable submit button only if number of answers matches the number of questions
+            if (inputValue.length === numQuestions && numQuestions > 0) {
+                submitButton.disabled = false;
+            } else {
+                submitButton.disabled = true;
+            }
+        }
+
+        function submitAnswers() {
+            const answerString = answersInput.value.trim();
+            answers = answerString.split(''); // Split the string into individual answers (no commas needed)
+
+            // Store the answers and number of questions in localStorage
+            localStorage.setItem('numQuestions', numQuestions);
+            localStorage.setItem('correctAnswers', JSON.stringify(answers));
+
+            // Redirect to practice page
+            window.location.href = 'practice.html';
+        }
+    </script>
+</body>
+</html>

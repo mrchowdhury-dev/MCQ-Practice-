@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MCQ Practice Platform</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <header>
+        <h1>Welcome to the MCQ Practice Platform</h1>
+    </header>
+    <div class="container">
+        <h2>About the Platform</h2>
+        <p>This website allows you to practice multiple-choice questions, check your results, and track your progress effectively. Explore the features to boost your learning!</p>
+
+        <div class="nav-links">
+            <a href="submit.html" class="btn">Start Practice</a>
+        </div>
+
+        <div class="features">
+            <h3>Features:</h3>
+            <ul>
+                <li>Practice MCQs with instant feedback.</li>
+                <li>Submit your own questions for practice.</li>
+                <li>Save your results as a PDF with customizable filenames.</li>
+                <li>Track your performance statistics over time.</li>
+                <li>Switch between Dark and Light modes for accessibility.</li>
+            </ul>
+        </div>
+
+        <button class="toggle-btn" onclick="toggleDarkMode()">Toggle Dark/Light Mode</button>
+    </div>
+    
+    <footer>
+        <p>&copy; 2024 MCQ Practice Platform | All rights reserved.</p>
+    </footer>
+
+    <script>
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+        }
+    </script>
+</body>
+</html>
